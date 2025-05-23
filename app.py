@@ -8,7 +8,11 @@ csv_file = st.file_uploader("Įkelkite CSV failą", type=["csv"])
 xlsx_file = st.file_uploader("Įkelkite Excel failą", type=["xlsx"])
 
 if csv_file and xlsx_file:
-df_csv = pd.read_csv(csv_file, encoding='latin1')  # arba encoding='windows-1257'
+    try:
+        df_csv = pd.read_csv(csv_file, encoding='utf-8')
+    except UnicodeDecodeError:
+        df_csv = pd.read_csv(csv_file, encoding='windows-1257')  # arba 'latin1'
+
     df_xlsx = pd.read_excel(xlsx_file)
 
     df_csv = df_csv[[
@@ -19,7 +23,6 @@ df_csv = pd.read_csv(csv_file, encoding='latin1')  # arba encoding='windows-1257
         'Buhalterinis sandėlis'
     ]].copy()
 
-    # Išskaidom prekės kodą iš pirmo žodžio
     df_xlsx['Prekės kodas'] = df_xlsx['Prekė'].astype(str).str.split().str[0]
 
     df_xlsx = df_xlsx[[
