@@ -8,7 +8,7 @@ csv_file = st.file_uploader("Įkelkite CSV failą", type=["csv"])
 xlsx_file = st.file_uploader("Įkelkite Excel failą", type=["xlsx"])
 
 if csv_file and xlsx_file:
-    df_csv = pd.read_csv(csv_file)
+df_csv = pd.read_csv(csv_file, encoding='latin1')  # arba encoding='windows-1257'
     df_xlsx = pd.read_excel(xlsx_file)
 
     df_csv = df_csv[[
